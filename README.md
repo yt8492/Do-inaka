@@ -20,6 +20,7 @@ do_inaka
 ├── infra
 │   ├── api
 │   └── impl
-└── ui
+├── ui
+└── usecase
 
 ```
