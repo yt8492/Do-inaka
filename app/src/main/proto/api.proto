@@ -35,7 +35,7 @@ message Drivers {
 }
 
 message Order {
-    string post_number = 1;
+    string post_number = 1; // 郵便番号
     string address = 2; // 都道府県市区町村以下全て
     repeated string items = 3;
 }
@@ -58,7 +58,7 @@ message EvalDriverRequest {
 service RequesterService {
     rpc GetNearByDriversLocation(Position) returns(Drivers);
     rpc Chumon(Order) returns (Empty); // クソAPI
-    rpc EvalDriver(EvalDriverRequest) returns (Empty);
+    rpc EvalDriver(EvalDriverRequest) returns (Empty); // ドライバーの評価
 }
 
 service InternalAPI {
