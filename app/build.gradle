@@ -18,7 +18,8 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "SERVER_ADDRESS", "\"http://localhost:50051\"")
+        buildConfigField("String", "SERVER_ADDRESS", "\"10.0.2.2\"")
+        buildConfigField("int", "SERVER_PORT", "50051")
     }
     buildTypes {
         release {

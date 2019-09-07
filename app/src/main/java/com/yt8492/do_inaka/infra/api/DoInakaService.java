@@ -1,15 +1,11 @@
 package com.yt8492.do_inaka.infra.api;
 
-import com.yt8492.do_inaka.domain.repository.AuthTokenRepository;
 import com.yt8492.do_inaka.protobuf.CommonServiceGrpc;
 import com.yt8492.do_inaka.protobuf.Driver;
-import com.yt8492.do_inaka.protobuf.DriverOrBuilder;
 import com.yt8492.do_inaka.protobuf.DriverServiceGrpc;
-import com.yt8492.do_inaka.protobuf.Drivers;
 import com.yt8492.do_inaka.protobuf.Empty;
 import com.yt8492.do_inaka.protobuf.LoginRequest;
 import com.yt8492.do_inaka.protobuf.LoginResponse;
-import com.yt8492.do_inaka.protobuf.Order;
 import com.yt8492.do_inaka.protobuf.Orders;
 import com.yt8492.do_inaka.protobuf.Position;
 
@@ -21,9 +17,10 @@ import io.grpc.ManagedChannelBuilder;
 
 public class DoInakaService {
 
-    String address;
-    int port;
-    AuthTokenRepository repository;
+    private String address;
+    private int port;
+
+    private CommonServiceGrpc.CommonServiceBlockingStub commonServiceStub;
 
     @Inject
     public DoInakaService(
@@ -32,12 +29,16 @@ public class DoInakaService {
     ) {
         this.address = address;
         this.port = port;
-        this.repository = repository;
+        commonServiceStub  = CommonServiceGrpc.newBlockingStub(
+                ManagedChannelBuilder
+                        .forAddress(
+                                address,
+                                port
+                        )
+                        .usePlaintext()
+                        .build()
+        );
     }
-
-    private CommonServiceGrpc.CommonServiceBlockingStub commonServiceStub = CommonServiceGrpc.newBlockingStub(ManagedChannelBuilder.forAddress(address, port)
-            .usePlaintext()
-            .build());
 
     public LoginResponse login(String userName, String password)
     {

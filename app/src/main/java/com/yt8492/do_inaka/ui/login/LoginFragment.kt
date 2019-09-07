@@ -56,8 +56,14 @@ class LoginFragment : Fragment() {
                 LoginResult.Failure.EmptyPassword -> {
                     toast("パスワードを入力してください")
                 }
+                LoginResult.Failure.UserNotFound -> {
+                    toast("ユーザーが存在しません")
+                }
                 LoginResult.Failure.InvalidPassword -> {
                     toast("パスワードが間違っています")
+                }
+                LoginResult.Failure.UnknownError -> {
+                    toast("不明なエラーが発生しました")
                 }
             }
         })

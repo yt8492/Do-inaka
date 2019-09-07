@@ -6,6 +6,8 @@ import com.yt8492.do_inaka.domain.repository.LoginUserRepository
 import com.yt8492.do_inaka.domain.repository.LoginRepository
 import com.yt8492.do_inaka.usecase.login.LoginResult
 import com.yt8492.do_inaka.usecase.login.LoginUseCase
+import io.grpc.Status
+import io.grpc.StatusRuntimeException
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -25,8 +27,22 @@ class LoginUseCaseImpl @Inject constructor(
             val loginUser = loginRepository.login(username, password)
             loginUserRepository.saveLoginUser(loginUser)
             LoginResult.Success(loginUser)
+        } catch (e: StatusRuntimeException) {
+            if (e.status.code == Status.UNAUTHENTICATED.code) {
+                when (e.status.description) {
+                    "user name not match" -> {
+                        return LoginResult.Failure.UserNotFound
+                    }
+                    "user password not match" -> {
+                        return LoginResult.Failure.InvalidPassword
+                    }
+                }
+            }
+            e.printStackTrace()
+            LoginResult.Failure.UnknownError
         } catch (e: Exception) {
-            LoginResult.Failure.InvalidPassword
+            e.printStackTrace()
+            LoginResult.Failure.UnknownError
         }
     }
 }

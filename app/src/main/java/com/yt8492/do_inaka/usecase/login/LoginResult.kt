@@ -7,6 +7,8 @@ sealed class LoginResult {
     sealed class Failure : LoginResult() {
         object EmptyUsername : Failure()
         object EmptyPassword : Failure()
+        object UserNotFound : Failure()
         object InvalidPassword : Failure()
+        object UnknownError : Failure()
     }
 }
