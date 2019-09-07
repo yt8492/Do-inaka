@@ -14,6 +14,7 @@ message LoginRequest {
 
 message LoginResponse {
     string token = 1;
+    int64 role = 2; // requester : 1, driver : 2
 }
 
 service CommonService {
@@ -44,10 +45,15 @@ message Orders {
     repeated Order orders = 1;
 }
 
+message Requester {
+    string id = 1;
+    string address = 2;
+}
+
 service DriverService {
     rpc SendCurrentPlace(Position) returns(Empty); // 現在地を一定時間で投げまくる
     rpc GetMyProfile(Empty) returns (Driver);
-    rpc GetOrder(Empty) returns (Orders);
+    rpc GetOrder(Empty) returns (Orders); // JWTの仲のIDを使って注文を取ってくる
 }
 
 message EvalDriverRequest {
@@ -59,6 +65,7 @@ service RequesterService {
     rpc GetNearByDriversLocation(Position) returns(Drivers);
     rpc Chumon(Order) returns (Empty); // クソAPI
     rpc EvalDriver(EvalDriverRequest) returns (Empty);
+    rpc GetMyProfile(Empty) returns (Requester);
 }
 
 service InternalAPI {
