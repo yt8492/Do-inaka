@@ -14,12 +14,19 @@ class LoginUseCaseImpl @Inject constructor(
     private val authTokenRepository: AuthTokenRepository
 ) : LoginUseCase {
 
-    override suspend fun execute(username: Username, password: Password): LoginResult =
-        try {
+    override suspend fun execute(username: Username, password: Password): LoginResult {
+        if (username.value.isBlank()) {
+            return LoginResult.Failure.EmptyUsername
+        }
+        if (username.value.isBlank()) {
+            return LoginResult.Failure.EmptyPassword
+        }
+        return try {
             val token = loginRepository.login(username, password)
             authTokenRepository.saveToken(token)
             LoginResult.Success(token)
         } catch (e: Exception) {
-            LoginResult.Failure
+            LoginResult.Failure.InvalidPassword
         }
+    }
 }

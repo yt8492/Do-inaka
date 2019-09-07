@@ -3,7 +3,7 @@ package com.yt8492.do_inaka.domain.repository
 import com.yt8492.do_inaka.domain.model.*
 import com.yt8492.do_inaka.protobuf.Empty
 
-interface RequesterService {
+interface RequesterRepository {
 
     suspend fun getNearByDriversLocation(latitude: Latitude, longitude: Longitude): List<Driver>
 
