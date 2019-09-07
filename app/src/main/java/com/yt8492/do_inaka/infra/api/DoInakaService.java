@@ -28,8 +28,7 @@ public class DoInakaService {
     @Inject
     public DoInakaService(
             @Named("Address") String address,
-            @Named("Port") int port,
-            AuthTokenRepository repository
+            @Named("Port") int port
     ) {
         this.address = address;
         this.port = port;
