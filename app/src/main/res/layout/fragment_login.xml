@@ -23,6 +23,7 @@
             android:layout_marginEnd="40dp"
             android:textSize="16sp"
             android:textColor="@color/black"
+            android:inputType="text"
             android:hint="ID"
             android:backgroundTint="@color/colorPrimary"
             app:layout_constraintStart_toStartOf="parent"

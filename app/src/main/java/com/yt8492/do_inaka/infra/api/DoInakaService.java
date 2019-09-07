@@ -3,10 +3,12 @@ package com.yt8492.do_inaka.infra.api;
 import com.yt8492.do_inaka.protobuf.CommonServiceGrpc;
 import com.yt8492.do_inaka.protobuf.Driver;
 import com.yt8492.do_inaka.protobuf.DriverServiceGrpc;
+import com.yt8492.do_inaka.protobuf.Drivers;
 import com.yt8492.do_inaka.protobuf.Empty;
 import com.yt8492.do_inaka.protobuf.EvalDriverRequest;
 import com.yt8492.do_inaka.protobuf.LoginRequest;
 import com.yt8492.do_inaka.protobuf.LoginResponse;
+import com.yt8492.do_inaka.protobuf.Order;
 import com.yt8492.do_inaka.protobuf.Orders;
 import com.yt8492.do_inaka.protobuf.Position;
 import com.yt8492.do_inaka.protobuf.Requester;
@@ -59,12 +61,15 @@ public class DoInakaService {
         return res;
     }
 
-    public void sendCurrentPlace(String latitude, String longitude){
+    public void sendCurrentPlace(String token, String latitude, String longitude){
         //request(position)
         Position req = Position.newBuilder()
                 .setLatitude(latitude)
                 .setLongitude(longitude)
                 .build();
+
+        DriverServiceGrpc.newBlockingStub(makePrivateChannel(token))
+                .sendCurrentPlace(req);
         //res(Empty)
     }
 
@@ -89,7 +94,7 @@ public class DoInakaService {
         return res;
     }
 
-    public Drivers getNearByDriversLocation(String token, String latitude, String longitude){
+    public List<Driver> getNearByDriversLocation(String token, String latitude, String longitude){
         //req(Position)
         Position req = Position.newBuilder()
                 .setLatitude(latitude)
@@ -99,25 +104,30 @@ public class DoInakaService {
         ManagedChannel privateChannel = makePrivateChannel(token);
         RequesterServiceGrpc.RequesterServiceBlockingStub privateStub = RequesterServiceGrpc.newBlockingStub(privateChannel);
         Drivers res = privateStub.getNearByDriversLocation(req);
-        return res;
+        return res.getDriverList();
     }
 
-    public void Chumon (String post_number, String address ,List<String> items){
+    public void chumon(String token, String postNumber, String address ,List<String> items){
         //req(Order)
         Order req = Order.newBuilder()
-                .setPostNumber(post_number)
+                .setPostNumber(postNumber)
                 .setAddress(address)
                 .addAllItems(items)
                 .build();
+        RequesterServiceGrpc.newBlockingStub(makePrivateChannel(token))
+                .chumon(req);
         //res(Empty)
     }
 
-    public void evalDriver(String user_id, long reliability_score){
+    public void evalDriver(String token, String userId, long reliabilityScore){
         //req(EvalDriverRequest)
         EvalDriverRequest req = EvalDriverRequest.newBuilder()
-                .setUserId(user_id)
-                .setReliabilityScore(reliability_score)
+                .setUserId(userId)
+                .setReliabilityScore(reliabilityScore)
                 .build();
+
+        RequesterServiceGrpc.newBlockingStub(makePrivateChannel(token))
+                .evalDriver(req);
         //res(Empty)
     }
 
