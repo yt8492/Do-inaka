@@ -9,5 +9,5 @@ interface RequesterService {
 
     suspend fun sendOrder(order: Order): Empty
 
-    suspend fun evalDriver(id: DriverId, score: Long)
+    suspend fun evalDriver(driverId: UserId, score: ReliabilityScore)
 }
