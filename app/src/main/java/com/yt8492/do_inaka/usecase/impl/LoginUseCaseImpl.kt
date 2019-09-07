@@ -2,7 +2,7 @@ package com.yt8492.do_inaka.usecase.impl
 
 import com.yt8492.do_inaka.domain.model.Password
 import com.yt8492.do_inaka.domain.model.Username
-import com.yt8492.do_inaka.domain.repository.AuthTokenRepository
+import com.yt8492.do_inaka.domain.repository.LoginUserRepository
 import com.yt8492.do_inaka.domain.repository.LoginRepository
 import com.yt8492.do_inaka.usecase.login.LoginResult
 import com.yt8492.do_inaka.usecase.login.LoginUseCase
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class LoginUseCaseImpl @Inject constructor(
     private val loginRepository: LoginRepository,
-    private val authTokenRepository: AuthTokenRepository
+    private val loginUserRepository: LoginUserRepository
 ) : LoginUseCase {
 
     override suspend fun execute(username: Username, password: Password): LoginResult {
@@ -22,9 +22,9 @@ class LoginUseCaseImpl @Inject constructor(
             return LoginResult.Failure.EmptyPassword
         }
         return try {
-            val token = loginRepository.login(username, password)
-            authTokenRepository.saveToken(token)
-            LoginResult.Success(token)
+            val loginUser = loginRepository.login(username, password)
+            loginUserRepository.saveLoginUser(loginUser)
+            LoginResult.Success(loginUser)
         } catch (e: Exception) {
             LoginResult.Failure.InvalidPassword
         }

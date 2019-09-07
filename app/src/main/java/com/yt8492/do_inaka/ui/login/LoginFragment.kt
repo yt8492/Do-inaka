@@ -9,10 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.yt8492.do_inaka.databinding.FragmentLoginBinding
+import com.yt8492.do_inaka.domain.model.UserType
 import com.yt8492.do_inaka.usecase.login.LoginResult
 import com.yt8492.do_inaka.util.toast
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
+import kotlin.math.log
 
 class LoginFragment : Fragment() {
 
@@ -59,9 +61,14 @@ class LoginFragment : Fragment() {
                 }
             }
         })
-        viewModel.isLoggedIn.observe(viewLifecycleOwner, Observer { isLoggedIn ->
-            if (isLoggedIn) {
-                toast("ログインしました")
+        viewModel.loginUser.observe(viewLifecycleOwner, Observer { loginUser ->
+            when (loginUser.userType) {
+                UserType.Requester -> {
+                    toast("TODO: Requester画面に遷移")
+                }
+                UserType.Driver -> {
+                    toast("TODO: Driver画面に遷移")
+                }
             }
         })
         viewModel.checkLogin()

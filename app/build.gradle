@@ -18,7 +18,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "SERVER_ADDRESS", "\"http://localhost:8080\"")
+        buildConfigField("String", "SERVER_ADDRESS", "\"http://localhost:50051\"")
     }
     buildTypes {
         release {
