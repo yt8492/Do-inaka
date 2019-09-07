@@ -47,12 +47,38 @@ android {
     }
 }
 
+configurations {
+    all*.exclude group: 'com.google.guava', module: 'listenablefuture'
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.core:core-ktx:1.0.2'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutine"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutine"
+
+    implementation "androidx.appcompat:appcompat:$versions.appcompat"
+
+    implementation "androidx.core:core-ktx:$versions.core"
+
+    implementation "androidx.fragment:fragment-ktx:$versions.fragment"
+
+    implementation "androidx.paging:paging-runtime:$versions.paging"
+
+    implementation "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$versions.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycle"
+
+    implementation "com.google.dagger:dagger:$versions.dagger2"
+    implementation "com.google.dagger:dagger-android-support:$versions.dagger2"
+    kapt "com.google.dagger:dagger-compiler:$versions.dagger2"
+    kapt "com.google.dagger:dagger-android-processor:$versions.dagger2"
+
+    implementation "io.grpc:grpc-okhttp:${versions.grpc}"
+    implementation "io.grpc:grpc-protobuf-lite:${versions.grpc}"
+    implementation "io.grpc:grpc-stub:${versions.grpc}"
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

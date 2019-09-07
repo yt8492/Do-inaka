@@ -13,7 +13,7 @@ Dagger2でDIをする
 
 ```
 do_inaka
-├── MainActivity.kt
+├── LoginActivity.kt
 ├── domain
 │   ├── model
 │   └── repository
