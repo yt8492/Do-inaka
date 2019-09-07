@@ -1,0 +1,66 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "com.yt8492.do_inaka.protobuf";
+option java_outer_classname = "DiProto";
+
+package api;
+
+message Empty{}
+
+message LoginRequest {
+    string id = 1;
+    string password = 2;
+}
+
+message LoginResponse {
+    string token = 1;
+}
+
+service CommonService {
+    rpc Login(LoginRequest) returns(LoginResponse);
+}
+
+message Position {
+    string latitude = 1;
+    string longitude = 2;
+}
+
+message Driver {
+    string id = 1;
+    int64 reliability_score = 2; // 信頼度
+}
+
+message Drivers {
+    repeated Driver driver = 1;
+}
+
+message Order {
+    string post_number = 1;
+    string address = 2; // 都道府県市区町村以下全て
+    repeated string items = 3;
+}
+
+message Orders {
+    repeated Order orders = 1;
+}
+
+service DriverService {
+    rpc SendCurrentPlace(Position) returns(Empty); // 現在地を一定時間で投げまくる
+    rpc GetMyProfile(Empty) returns (Driver);
+    rpc GetOrder(Empty) returns (Orders);
+}
+
+message EvalDriverRequest {
+    string user_id = 1;
+    int64 reliability_score = 2; // 信頼度
+}
+
+service RequesterService {
+    rpc GetNearByDriversLocation(Position) returns(Drivers);
+    rpc Chumon(Order) returns (Empty); // クソAPI
+    rpc EvalDriver(EvalDriverRequest) returns (Empty);
+}
+
+service InternalAPI {
+    // TODO: write it
+}
